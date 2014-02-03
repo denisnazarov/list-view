@@ -190,3 +190,37 @@ test("deleting the first element", function() {
   equal(Ember.$(positionSorted[0]).text(), "Item 2", "The item has been inserted in the list");
 });
 
+test("replacing the list content after scrolling to the middle", function() {
+  var content = helper.generateContent(100),
+      height = 500,
+      rowHeight = 50,
+      itemViewClass = Ember.ListItemView.extend({
+        template: Ember.Handlebars.compile("{{name}}")
+      });
+
+  view = Ember.ListView.create({
+    content: content,
+    height: height,
+    rowHeight: rowHeight,
+    itemViewClass: itemViewClass
+  });
+
+  appendView();
+
+  Ember.run(function(){
+    view.scrollTo(2500);
+  });
+
+  Ember.run(function() {
+    view.set('content', helper.generateContent(3));
+  });
+
+  equal(view.$('.ember-list-item-view').length, 3, "The rendered list was updated");
+  equal(view.$('.ember-list-container').height(), 150, "The scrollable view has the correct height");
+  deepEqual(helper.itemPositions(view), [
+              { x: 0, y: 0 },
+              { x: 0, y: 50 },
+              { x: 0, y: 150 }], "The rows are in the correct positions");
+  equal(view.$('.ember-list-item-view:visible').length, 3, "The number of items that are not hidden with display:none");
+});
+
