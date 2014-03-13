@@ -220,7 +220,7 @@ test("replacing the list content after scrolling to the middle", function() {
   deepEqual(helper.itemPositions(view), [
               { x: 0, y: 0 },
               { x: 0, y: 50 },
-              { x: 0, y: 150 }], "The rows are in the correct positions");
+              { x: 0, y: 100 }], "The rows are in the correct positions");
   equal(view.$('.ember-list-item-view:visible').length, 3, "The number of items that are not hidden with display:none");
 });
 
